@@ -17,21 +17,22 @@ const eqArrays = (a, b) => {
 };
 
 const without = (source, itemsToRemove) => {
-  // create a clone of original array, so the source array isn't changed
-  const output = [...source];
-  // nested loop to iterate through new clone array
-    for (let i = 0; i < output.length; i++) {
-      for (let j = 0; j < itemsToRemove.length; j++) {
-      // conditional to remove any existing elements
-      if (output[i] === itemsToRemove[j]) {
-        output.splice(i, 1);
+  let result = [];
+  for (let i = 0; i < source.length; i++) {
+    let remove = false;
+    for (let j = 0; j < itemsToRemove.length; j++) {
+      if (source[i] === itemsToRemove[j]) {
+        remove = true;
       }
     }
+    if (!remove) {
+      result.push(source[i]);
+    }
   }
-  return output;
-}
+  return result;
+};
 
-console.log(without([1, 2, 3], [1]));
+console.log(without([1, 2, 1, 3], [1]));
 console.log(without(["1", "2", "3"], [1, 2, "3"]));
 
 const words = ["hello", "world", "lighthouse"];
