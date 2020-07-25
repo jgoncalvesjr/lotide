@@ -8,36 +8,44 @@ const assertEqual = (actual, expected) => {
   }
 };
 
-const eqArrays = (a, b) => {
-  return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
+const eqArrays = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) { // arrays have same length?
+    return false;
+  }
+  for (let i = 0; i < arr1.length; i++) {
+    if (Array.isArray(arr1[i]) && Array.isArray(arr2[i])) { // if both elements in arrays are arrays
+      if (!eqArrays(arr1[i], arr2[i])) { // verify content equality recursively
+        return false;
+      }
+    } else if (!(arr1[i] === arr2[i])) { // else, verify them separately
+      return false;
+    }
+  }
+  return true;
 };
 
 // Returns true if both objects have identical keys with identical values.
 // Otherwise you get back a big fat false!
 
 const eqObjects = (obj1, obj2) => {
-  // extracts key array from objects, to ensure same key arrays are assembled
-  const obj1KeysArr = Object.keys(obj1);
-  const obj2KeysArr = Object.keys(obj2);
-  if (!(obj1KeysArr.length === obj2KeysArr.length)) { // same key length?
+  if (Object.keys(obj1).length !== Object.keys(obj2).length) { // if objects don't have the same key length, false
     return false;
   } else {
-    for (let obj1Key of obj1KeysArr) {
-      if (!obj2[obj1Key]) {  // are keys equal?
+    for (let key in obj1) {
+      if (Array.isArray(obj1[key])) { // if object keys are arrays, verify array elements
+        if (eqArrays(obj1[key], obj2[key]) === false) {
+          return false;
+        }
+      } else if (typeof obj1[key] === 'object') { // if object key is object, verify recursively
+        if (eqObjects(obj1[key], obj2[key]) === false) {
+          return false;
+        }
+      } else if (obj1[key] !== obj2[key]) { // if none are met, primitive value check only
         return false;
       }
-      if (Array.isArray(obj1[obj1Key])) { // is the object value an array? If so, arrays must be compared instead of primitive values
-        if (!eqArrays(obj1[obj1Key], obj2[obj1Key])) { // are arrays in values equal?
-          return false;
-        }
-      } else {
-        if (!(obj1[obj1Key] === obj2[obj1Key])) { // are primitive values equal?
-          return false;
-        }
-      }
     }
-    return true;
   }
+  return true;
 };
 
 const test1 = { a: "1", b: "2" };
@@ -48,7 +56,16 @@ const test5 = { x: "3", y: "1", z: "2" };
 const test6 = { c: "1", d: ["2", 3] };
 const test7 = { d: ["2", 3], c: "1" };
 const test8 = { c: "1", d: ["2", 3, 4] };
+const test9 = { a: { z: 1 }, b: 2 };
+const test10 = { a: { y: 0, z: 1 }, b: 2 };
+const test11 = { a: 1, b: 2 };
+const test12 = { a: { z: 1, y: 0 }, b: 2 };
 
+
+console.log(assertEqual(eqObjects(test9, test9), true));
+console.log(assertEqual(eqObjects(test1, test11), false));
+console.log(assertEqual(eqObjects(test10, test11), false));
+console.log(assertEqual(eqObjects(test10, test12), true));
 console.log(assertEqual(eqObjects(test1, test2), true));
 console.log(assertEqual(eqObjects(test1, test3), false));
 console.log(assertEqual(eqObjects(test3, test4), false));

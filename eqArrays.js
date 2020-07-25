@@ -8,10 +8,25 @@ const assertEqual = (actual, expected) => {
   }
 };
 
-const eqArrays = (a, b) => {
-  return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
+const eqArrays = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) { // arrays have same length?
+    return false;
+  }
+  for (let i = 0; i < arr1.length; i++) {
+    if (Array.isArray(arr1[i]) && Array.isArray(arr2[i])) { // if both elements in arrays are arrays
+      if (!eqArrays(arr1[i], arr2[i])) { // verify content equality recursively
+        return false;
+      }
+    } else if (!(arr1[i] === arr2[i])) { // else, verify them separately
+      return false;
+    }
+  }
+  return true;
 };
 
 console.log(assertEqual(eqArrays([1, 2, 3], [1, 2, 3]), true));
-console.log(assertEqual(eqArrays([1, 2, 3], [1, 2, '3']), true));
-console.log(assertEqual(eqArrays([1, 2, 3], [1, 2, '3']), true));
+console.log(assertEqual(eqArrays([1, 2, 3], [1, 2, '3']), false));
+console.log(assertEqual(eqArrays([1, 2, '3'], [1, 2, '3']), true));
+console.log(assertEqual(eqArrays([[2, 3], [4]], [[2, 3], [4]]), true)); // => true
+console.log(assertEqual(eqArrays([[2, 3], [4]], [[2, 3], [4, 5]]), false)); // => false
+console.log(assertEqual(eqArrays([[2, 3], [4]], [[2, 3], 4]), false)); // => false
