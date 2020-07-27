@@ -1,13 +1,3 @@
-const assertEqual = (actual, expected) => {
-  const nay = String.fromCodePoint(0x1F62D);
-  const yea = String.fromCodePoint(0x1F389);
-  if (actual === expected) {
-    return `${yea}${yea}${yea} Assertion Passed: ${actual} === ${expected}`;
-  } else {
-    return `${nay}${nay}${nay} Assertion Failed: ${actual} !== ${expected}`;
-  }
-};
-
 const eqArrays = (arr1, arr2) => {
   if (arr1.length !== arr2.length) { // arrays have same length?
     return false;
@@ -24,9 +14,4 @@ const eqArrays = (arr1, arr2) => {
   return true;
 };
 
-console.log(assertEqual(eqArrays([1, 2, 3], [1, 2, 3]), true));
-console.log(assertEqual(eqArrays([1, 2, 3], [1, 2, '3']), false));
-console.log(assertEqual(eqArrays([1, 2, '3'], [1, 2, '3']), true));
-console.log(assertEqual(eqArrays([[2, 3], [4]], [[2, 3], [4]]), true)); // => true
-console.log(assertEqual(eqArrays([[2, 3], [4]], [[2, 3], [4, 5]]), false)); // => false
-console.log(assertEqual(eqArrays([[2, 3], [4]], [[2, 3], 4]), false)); // => false
+module.exports = eqArrays;
