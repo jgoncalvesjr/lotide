@@ -24,7 +24,7 @@ This project was created and published by me as part of my learnings at Lighthou
 
 ## Documentation
 
-#### Version 1.0.2
+#### Version 1.0.1
 
 * Fixed module exports
 * Fixed incorrect file uploads
