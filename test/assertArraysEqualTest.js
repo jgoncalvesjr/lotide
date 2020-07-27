@@ -1,4 +1,4 @@
-const assertArraysEqual = require('../assertArraysEqual')
+// Transferred manual test content from original file
 
 console.log(assertArraysEqual([1, 2, 3], [1, 2, 3]));
 console.log(assertArraysEqual([1, 2, 3], [1, 2, '3']));

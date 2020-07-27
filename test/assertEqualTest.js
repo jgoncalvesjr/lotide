@@ -1,3 +1,5 @@
+// Transferred manual test content from original file
+
 const assertEqual = require('../assertEqual');
 
 console.log(assertEqual('Lighthouse Labs', 'Bootcamp'));

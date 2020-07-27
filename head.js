@@ -1,5 +1,3 @@
-const assertEqual = require('./assertEqual');
-
 const head = args => {
   let result;
   if (args === []) {
